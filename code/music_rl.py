@@ -10,9 +10,10 @@ import numpy as np
 import scipy.special
 import tensorflow.compat.v1 as tf
 
-from magenta.models.rl_tuner import note_rnn_loader
 from magenta.models.rl_tuner import rl_tuner_eval_metrics
 from magenta.models.rl_tuner import rl_tuner_ops
+
+import note_rnn_loader
 
 NOTE_OFF = 0
 NO_EVENT = 1
@@ -630,12 +631,22 @@ class MusicRl(object):
         else:
             return 0.0
 
+    @classmethod
+    def autocorrelate(cls, signal, lag=1):
+        n = len(signal)
+        x = np.asarray(signal) - np.mean(signal)
+        c0 = np.var(signal)
+
+        if c0 == 0:
+            return 1
+        return (x[lag:] * x[:n - lag]).sum() / float(n) / c0
+
     def reward_penalize_autocorrelation(self, action, penalty_weight=3.0):
         composition = self.composition + [np.argmax(action)]
         lags = [1, 2, 3]
         sum_penalty = 0
         for lag in lags:
-            coeff = rl_tuner_ops.autocorrelate(composition, lag=lag)
+            coeff = self.autocorrelate(composition, lag=lag)
             if not np.isnan(coeff):
                 if np.abs(coeff) > 0.15:
                     sum_penalty += np.abs(coeff) * penalty_weight
