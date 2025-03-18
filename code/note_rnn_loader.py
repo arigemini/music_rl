@@ -10,6 +10,7 @@ class NoteRNNLoader(BaseNoteRNNLoader):
             if '/Adam' in var.name:
                 pass
             else:
+                # Overriding certain vars to bypass failures when loading NoteRNN checkpoint
                 scope = self.checkpoint_scope + '/' + inner_name
                 if scope == 'rnn_model/rnn/multi_rnn_cell/cell_0/lstm_cell/bias':
                     var_dict['rnn_model/RNN/MultiRNNCell/Cell0/LSTMCell/B'] = var
