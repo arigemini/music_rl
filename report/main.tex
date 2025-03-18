@@ -1,0 +1,149 @@
+%%%%%%%% ICML 2018 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended, but optional, packages for figures and better typesetting:
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs} % for professional tables
+
+% hyperref makes hyperlinks in the resulting PDF.
+% If your build breaks (sometimes temporarily if a hyperlink spans a page)
+% please comment out the following usepackage line and replace
+% \usepackage{icml2018} with \usepackage[nohyperref]{icml2018} above.
+\usepackage{hyperref}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Use the following line for the initial blind version submitted for review:
+% \usepackage{icml2018}
+
+% If accepted, instead use the following line for the camera-ready submission:
+\usepackage[accepted]{icml2018}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Submission and Formatting Instructions for ICML 2018}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{CS 234: Music Generation Using Reinforcement Learning}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2018
+% package.
+
+% List of affiliations: The first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% You can specify symbols, otherwise they are numbered in order.
+% Ideally, you should not use this facility. Affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Arindam Saha}{}
+\end{icmlauthorlist}
+
+% \icmlaffiliation{to}{Department of Computation, University of Torontoland, Torontoland, Canada}
+% \icmlaffiliation{goo}{Googol ShallowMind, New London, Michigan, USA}
+% \icmlaffiliation{ed}{School of Computation, University of Edenborrow, Edenborrow, United Kingdom}
+
+% \icmlcorrespondingauthor{Cieua Vvvvv}{c.vvvvv@googol.com}
+% \icmlcorrespondingauthor{Eee Pppp}{ep@eden.co.uk}
+
+% You may provide any keywords that you
+% find helpful for describing your paper; these are used to populate
+% the "keywords" metadata in the PDF but will not be shown in the document
+% \icmlkeywords{Machine Learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+%\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+% \printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+
+% \begin{abstract}
+% This document provides a basic paper template and submission guidelines.
+% Abstracts must be a single paragraph, ideally between 4--6 sentences long.
+% Gross violations will trigger corrections at the camera-ready phase.
+% \end{abstract}
+
+\section{Introduction}
+% \label{submission}
+
+In this project, I’ll be looking into way of generating music using Reinforcement Learning. This project is interesting, to me at least, because I have been fascinated by music ever since I was a kid and play the piano and guitar myself. I have always wanted to create music but lacked the creative ability to do so, so this time, maybe I can use AI to help me.
+
+I’ll be using MIDI datasets to train the model. There are quite a few datasets available at \url{https://paperswithcode.com/datasets?mod=midi} I plan on training my model on a bunch of them and compare performance.
+
+I will try to implement the ideas put forward in the paper \url{https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45871.pdf} and then try to see if I can make improvements. The paper proposes Deep Q Learning and RNNs. I would also like to extend their method using Reinforcement Learning from Human Feedback to generate music to one’s liking.
+
+Qualitatively, I would like to conduct a survey of the AI generated music to see if people actually like it. Quantitatively measuring generated music is a  bit difficult. However, I plan to come up with metrics to see how closely the AI-generated music matches music theory rules.
+
+
+\section{Approach}
+% \label{submission}
+
+I have gone through the paper referenced above in detail as well as some other papers such as \url{https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=60c36d469c48541ec06f92cf982de0f7e12093cf} (Finding Temporal Structure in Music) and \url{https://arxiv.org/pdf/1604.08723} (Music Transcription Modeling and Composition using Deep Learning) to gain insight into prior work and potentially use it in my project.
+Since this project uses Recurrent Neural Networks, which I do not have much prior experience with, I have been doing a lot of reading and looking at code examples to gain a better understanding. I found examples of using RNNs for music in Google's Magenta codebase at \url{https://github.com/magenta} and have been playing around with it.
+
+I do not have any initial results at this point, as I am working alone on this project and have spent most of my time learning the concepts and refreshing my knowledge of music theory. The next step would be to apply the models to a music dataset at \url{https://paperswithcode.com/datasets?mod=midi} and try to replicate the authors' results. And then I intend to apply RLHF to see if the music generation adheres to one's liking.
+
+% Submission to ICML 2018 will be entirely electronic, via a web site
+% (not email). Information about the submission process and \LaTeX\ templates
+% are available on the conference web site at:
+% \begin{center}
+% \textbf{\texttt{http://icml.cc/2018/}}
+% \end{center}
+
+% The guidelines below will be enforced for initial submissions and
+% camera-ready copies. Here is a brief summary:
+% \begin{itemize}
+% \item Submissions must be in PDF\@.
+% \item The maximum paper length is \textbf{8 pages excluding references and
+%     acknowledgements, and 10 pages including references and acknowledgements}
+%     (pages 9 and 10 must contain only references and acknowledgements).
+% \item \textbf{Do not include author information or acknowledgements} in your
+%     initial submission.
+% \item Your paper should be in \textbf{10 point Times font}.
+% \item Make sure your PDF file only uses Type-1 fonts.
+% \item Place figure captions \emph{under} the figure (and omit titles from inside
+%     the graphic file itself). Place table captions \emph{over} the table.
+% \item References must include page numbers whenever possible and be as complete
+%     as possible. Place multiple citations in chronological order.
+% \item Do not alter the style template; in particular, do not compress the paper
+%     format by reducing the vertical spaces.
+% \item Keep your abstract brief and self-contained, one paragraph and roughly
+%     4--6 sentences. Gross violations will require correction at the
+%     camera-ready phase. The title should have content words capitalized.
+% \end{itemize}
+
+
+\end{document}
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was created
+% by Iain Murray in 2018. It was modified from a version from Dan Roy in
+% 2017, which was based on a version from Lise Getoor and Tobias
+% Scheffer, which was slightly modified from the 2010 version by
+% Thorsten Joachims & Johannes Fuernkranz, slightly modified from the
+% 2009 version by Kiri Wagstaff and Sam Roweis's 2008 version, which is
+% slightly modified from Prasad Tadepalli's 2007 version which is a
+% lightly changed version of the previous year's version by Andrew
+% Moore, which was in turn edited from those of Kristian Kersting and
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
