@@ -1,0 +1,35 @@
+Requires conda. Need to do `pip install magenta` or install from source.
+
+I installed magenta from source because I was having issues on mac osx (arm) and used the following package versions:
+
+'absl-py == 1.2.0'
+'dm-sonnet == 2.0.0'
+'imageio == 2.20.0'
+'librosa == 0.10.2'
+'matplotlib == 3.5.2'
+'mido == 1.2.6'
+'mir_eval == 0.7'
+'note-seq == 0.0.3'
+'numba == 0.60.0'
+'numpy == 1.22.4'
+'Pillow == 9.2.0'
+'pretty_midi == 0.2.9'
+'pygtrie == 2.5.0'
+'python-rtmidi == 1.5.8'
+'scikit-image == 0.19.3'
+'scipy == 1.7.3'
+'six == 1.16.0'
+'sk-video == 1.1.10'
+'sox == 1.4.1'
+'tensorflow == 2.13.1'
+'tensorflow-datasets == 4.6.0'
+'tensorflow-probability == 0.20.1'
+'tf_slim == 1.1.0'
+'wheel == 0.37.1'
+'typing-extensions == 4.5.0'
+'ipython == 8.22.0'
+'ipykernel'
+'gym == 0.17.2'
+'pytest-pylint'
+
+The training script is `music_rl.py`. There are 2 main notebooks that use it to run experiments: `baseline_note_rnn.ipynb` and `music_rl_train.ipynb`
