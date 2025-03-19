@@ -3,6 +3,7 @@
 \documentclass{article}
 
 % Recommended, but optional, packages for figures and better typesetting:
+\usepackage{amsmath,amssymb}
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{subfigure}
@@ -25,7 +26,7 @@
 
 % The \icmltitle you define below is probably too long as a header.
 % Therefore, a short form for the running title is supplied here:
-\icmltitlerunning{Submission and Formatting Instructions for ICML 2018}
+\icmltitlerunning{CS 234: Music Generation Using Reinforcement Learning}
 
 \begin{document}
 
@@ -88,53 +89,83 @@
 \end{abstract}
 
 \section{Introduction}
-% \label{submission}
 
-In this project, I’ll be looking into way of generating music using Reinforcement Learning. This project is interesting, to me at least, because I have been fascinated by music ever since I was a kid and play the piano and guitar myself. I have always wanted to create music but lacked the creative ability to do so, so this time, maybe I can use AI to help me.
+In this project, we’ll be looking into ways of generating music using Reinforcement Learning.
+This project is interesting, to me at least, because I have been fascinated by music ever since I was a kid and play the piano and guitar myself.
+I have always wanted to create music but lacked the creative ability to do so, so this time, maybe I can use Reinforcement Learning to help me.
 
-I’ll be using MIDI datasets to train the model. There are quite a few datasets available at \url{https://paperswithcode.com/datasets?mod=midi} I plan on training my model on a bunch of them and compare performance.
+We will implement the ideas put forward in the paper \href{https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45871.pdf}{Generating Music by Fine-Tuning Recurrent Neural Networks with Reinforcement Learning} (Jacques et al.), try to recreate the results and then extend it.
+The paper proposes using a baseline model trained on melodies using a RNN (Recursive Neural Network) and then further improves it using Reinforcement Learning.
+The authors claim that this solves various issues with music generation that arise with RNNs, such as the the melody repeating the same note as well as lacking
+a coherent global structure. Our results show that this is indeed true. By adding a music theory based reward during the Reinforcement Learning training process,
+we were able to greatly improve the quality of melodies generated. We are also able to tweak the reward function to generate particular types of music that appeal to one's liking.
 
-I will try to implement the ideas put forward in the paper \url{https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45871.pdf} and then try to see if I can make improvements. The paper proposes Deep Q Learning and RNNs. I would also like to extend their method using Reinforcement Learning from Human Feedback to generate music to one’s liking.
 
-Qualitatively, I would like to conduct a survey of the AI generated music to see if people actually like it. Quantitatively measuring generated music is a  bit difficult. However, I plan to come up with metrics to see how closely the AI-generated music matches music theory rules.
+\section{Background}
 
+Recurrent Neural Networks (RNNs), such as Long Short-Term Memory (LSTM) networks have been used for generative modeling of music (e.g. Erik \& Schmidhuber, 2002).
+In LSTM networks, each recurrent cell controls the storage of information via an input, output and forget gate. This lets them learn long-term
+dependencies in the data as well as allows them to quickly adapt to new data. A softmax on the final network output, lets us obtain the probabilty of each note.
+The LSTM is trained using softmax cross-entropy loss and back propagation through time.
+
+The LSTM network is trained on monophonic melodies. In order to generate, it is initialized with a short sequence of notes and then we iteratively
+generate notes by sampling from the output distribution induced by the model's final softmax layer. The recently sampled note becomes the input for the next step.
+Although they seem to generate music, they have some major drawbacks in that they repeat a lot of notes as well as produce sequences that very clearly lack a consistent structure.
+
+The Recurrent Neural Networks have no knowledge of music theory, which we know provides various rules that govern music composition.
+For example, music theory tell us that there are groups of notes that belong to keys, chords form progressions and that songs are made up of
+music phrases. It also tells us which keys conflict with each other, etc. Hence, we embed a music theory based reward function in our
+training to learn a model that balances between note probabilities found in the data as well as rules of music theory.
 
 \section{Approach}
-% \label{submission}
 
-I have gone through the paper referenced above in detail as well as some other papers such as \url{https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=60c36d469c48541ec06f92cf982de0f7e12093cf} (Finding Temporal Structure in Music) and \url{https://arxiv.org/pdf/1604.08723} (Music Transcription Modeling and Composition using Deep Learning) to gain insight into prior work and potentially use it in my project.
-Since this project uses Recurrent Neural Networks, which I do not have much prior experience with, I have been doing a lot of reading and looking at code examples to gain a better understanding. I found examples of using RNNs for music in Google's Magenta codebase at \url{https://github.com/magenta} and have been playing around with it.
+We use a pretrained RNN as our baseline model, which can be downloaded from \href{http://download.magenta.tensorflow.org/models/rl_tuner_note_rnn.ckpt}{here}.
+We then teach the RNN concepts of music theory using Reinforcement Learning, by using Deep Double Q-Learning (Hasselt et al, 2015).
 
-I do not have any initial results at this point, as I am working alone on this project and have spent most of my time learning the concepts and refreshing my knowledge of music theory. The next step would be to apply the models to a music dataset at \url{https://paperswithcode.com/datasets?mod=midi} and try to replicate the authors' results. And then I intend to apply RLHF to see if the music generation adheres to one's liking.
+In our application of Reinforcement Learning, the state $s$ is the composition so far, action $a$ is the next note to be played and we aim to learn a stochastic policy $\pi(a|s)$
+that generates melodious music. Q-learning learns the policy $\pi$ by maximizing reward over a trajectory (i.e. a sequence of notes), with a discount factor $\gamma$ applied
+to future rewards. The optimal policy satisfies the Bellman optimality equation
 
-% Submission to ICML 2018 will be entirely electronic, via a web site
-% (not email). Information about the submission process and \LaTeX\ templates
-% are available on the conference web site at:
-% \begin{center}
-% \textbf{\texttt{http://icml.cc/2018/}}
-% \end{center}
+$$
+Q(s_t, a_t; \pi^*) = r(s_t, a_t) + \gamma \mathbb{E}_{p(s_{t+1}|s_t,a_t)}[\max_{a_{t+1}} Q(s_{t+1},a_{t+1};\pi^*)]
+$$
 
-% The guidelines below will be enforced for initial submissions and
-% camera-ready copies. Here is a brief summary:
-% \begin{itemize}
-% \item Submissions must be in PDF\@.
-% \item The maximum paper length is \textbf{8 pages excluding references and
-%     acknowledgements, and 10 pages including references and acknowledgements}
-%     (pages 9 and 10 must contain only references and acknowledgements).
-% \item \textbf{Do not include author information or acknowledgements} in your
-%     initial submission.
-% \item Your paper should be in \textbf{10 point Times font}.
-% \item Make sure your PDF file only uses Type-1 fonts.
-% \item Place figure captions \emph{under} the figure (and omit titles from inside
-%     the graphic file itself). Place table captions \emph{over} the table.
-% \item References must include page numbers whenever possible and be as complete
-%     as possible. Place multiple citations in chronological order.
-% \item Do not alter the style template; in particular, do not compress the paper
-%     format by reducing the vertical spaces.
-% \item Keep your abstract brief and self-contained, one paragraph and roughly
-%     4--6 sentences. Gross violations will require correction at the
-%     camera-ready phase. The title should have content words capitalized.
-% \end{itemize}
+In Deep Q-learning (Mnih et al., 2013), we use a neural network called the deep Q-network (DQN) to approximate the Q function $Q(s,a;\theta)$
+The network parameters $\theta$ are updated via stochastic gradient descent (SGD) using the loss function defined below
+
+$$
+L(\theta) = \mathbb{E}_\beta[((r(s,a) + \gamma \max_{a'} Q(s', a'; \theta^-) - Q(s, a; \theta))^2]
+$$
+
+where $\beta$ is the exploration policy and $\theta^-$ is the Target Q-network, which is held fixed during gradient computation.
+The $\epsilon$-greedy method is used for exploration. Using a Target Q-network to estimate expected future returns, tackles the problem
+of Q-learning estimating unrealistically high values, which leads to better performance.
+
+A diagrom of the model is show in Figure 1.
+
+\begin{figure}
+\caption{Model (Jacques et al.)}
+\includegraphics[scale=0.5]{/Users/asaha/Documents/Stanford/projects/music_rl/report/model.png}
+\end{figure}
+
+The reward is calculated using a combination of the reward from from the baseline RNN model as well as from the music theory rules, as shown below
+
+$$
+r(s, a) = \log p(a|s) + \frac{1}{c}r_{MT}(a, s)
+$$
+
+where $r_{MT}$ is the reward from music theory.
+
+
+The music theory rewards are based on the book \href{https://www.jstor.org/stable/40213921?seq=1#page_scan_tab_contents}{“A Practical Approach to Eighteenth-Century Counterpoint” by Robert Gauldin}.
+We implement several of these and allow various reward functions be picked during training. Some of them are:
+
+\begin{itemize}
+    \item \textbf{Same Key} - We prefer notes played in the same key
+    \item \textbf{Avoid excessive repetition of notes} - We disincentivize the same note being repeated too many times
+    \item \textbf{Motifs} - We incentivize motifs i.e. a succession of notes representing a musical idea
+    \item \textbf{Repeated motifs} - We incentivize repeated motifs, since it increases likeability of a piece of music.
+\end{itemize}
 
 
 \end{document}
