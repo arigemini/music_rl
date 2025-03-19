@@ -145,7 +145,7 @@ A diagrom of the model is show in Figure 1.
 
 \begin{figure}
 \caption{Model (Jacques et al.)}
-\includegraphics[scale=0.5]{/Users/asaha/Documents/Stanford/projects/music_rl/report/model.png}
+\includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/model.png}
 \end{figure}
 
 The reward is calculated using a combination of the reward from from the baseline RNN model as well as from the music theory rules, as shown below
@@ -167,6 +167,75 @@ We implement several of these and allow various reward functions be picked durin
     \item \textbf{Repeated motifs} - We incentivize repeated motifs, since it increases likeability of a piece of music.
 \end{itemize}
 
+
+\section{Results}
+
+First we simply sample melodies from the baseline RNN model.
+
+\begin{figure}
+    \caption{Baseline model note probabilities}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/baseline_note_prob.png}
+    \end{figure}
+
+\begin{figure}
+    \caption{Baseline model sample melody}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/baseline_melody.png}
+\end{figure}
+
+Figure 2 shows the probability distribution of the various notes. Figure 3 shows a sample melody generated.
+We can see from both these figures the note probabilities graph is quite sparse and the sample melody generated has a lot of repeated notes.
+
+
+Then we sample melodies from our Reinforcement Learning trained model.
+
+\begin{figure}
+    \caption{RL Trained model note probabilities}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/trained_note_prob.png}
+\end{figure}
+
+\begin{figure}
+    \caption{Trained model sample melody}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/trained_melody.png}
+\end{figure}
+
+We can clearly see from Figures 4 and 5 that the trained model has a more spread-out probability graph and the sample melody is dense and has a repeating motif in it, aided by our reward function
+
+Figure 6 shows how the reward was split between the RNN and music theory, during training.
+
+\begin{figure}
+    \caption{Training plot}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/train_plot.png}
+\end{figure}
+
+
+For coverage, we generated 100 melodies from each model and collected music-theory related stats. Figures 7 and Figure 8 clearly show the stark difference. For example, the baseline model excessively repeated 1494 notes, whereas the trained model never did.
+The Notes not in key is also greatly less, hence, increasing the quality of music generated.
+
+\begin{figure}
+    \caption{Baseline evaluation stats}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/baseline_stats.png}
+\end{figure}
+
+\begin{figure}
+    \caption{Trained evaluation stats}
+    \includegraphics[scale=0.45]{/Users/asaha/Documents/Stanford/projects/music_rl/report/trained_stats.png}
+\end{figure}
+
+\section{Conclusion}
+
+The experiments demonstrate that teach a baseline RNN with music theory based Reinforcement Learning greatly improved the quality of generated music.
+Further work could experiment with various reward functions in order to improve the model. We can also add a Reinforcement Learning From Human Feedback component
+to generate music to one's liking. Yet another application could be generating music similar to a know piece of music, by adding the target music in the reward function of our model.
+
+\section{References}
+
+Jaques, N., Gu, S., Turner, R. E., \& Eck, D. Generating music by fine-tuning recurrent neural networks with reinforcement learning (2016)
+
+Van Hasselt, H., Guez, A., \& Silver, D. Deep reinforcement learning with double q-learning. In Proceedings of the AAAI conference on artificial intelligence (Vol. 30, No. 1). (2016, March)
+
+Christiano, P. F., Leike, J., Brown, T., Martic, M., Legg, S., \& Amodei, D. Deep reinforcement learning from human preferences. Advances in neural information processing systems, 30. (2017)
+
+Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D., \& Riedmiller, M. Playing atari with deep reinforcement learning. arXiv preprint arXiv:1312.5602. (2013)
 
 \end{document}
 
